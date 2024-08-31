@@ -1,7 +1,18 @@
-<div class="brod-details">
-    <h3>{{ brod?.naziv }}</h3>
-    <p>Type: {{ brod?.vrsta }}</p>
-    <button (click)="selectShip()">Select Ship</button>
-    <button (click)="addShipToScreen()">Add Ship</button>
-    <button (click)="removeShipFromScreen()">Remove Ship</button>
-  </div>
+<!-- brod.component.html -->
+<style>
+  .brod-details {
+    background-color: #fff;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+</style>
+
+<div class="brod-details" *ngIf="brod">
+  <h3>{{ brod.name }}</h3>
+  <p>Type: {{ brod.type }}</p>
+  <p>Crew: {{ brod.crew }}</p>
+  <!-- Removed buttons for select and add, retained remove functionality -->
+  <!-- <button (click)="removeShip()">Remove Ship</button> -->
+</div>

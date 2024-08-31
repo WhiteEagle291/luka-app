@@ -1,24 +1,17 @@
-.port-container {
-    border: 1px solid #ccc;
+.port-details {
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    background: #f9f9f9;
+    margin: 10px 0;
     padding: 10px;
-    margin: 10px;
-    width: 300px;
+    border-radius: 5px;
   }
-  
-  .ship-list {
-    margin-top: 10px;
+
+  h3 {
+    margin: 0;
   }
-  
-  .ship-item {
-    border: 1px solid #eee;
-    padding: 5px;
-    margin: 5px;
-  }
-  
-  .ship-buttons {
-    margin-top: 10px;
-  }
-  
-  button {
-    margin-right: 5px;
-  }
+}

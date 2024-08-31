@@ -1,8 +1,8 @@
-import { Brod } from "./brod";
+import { Brod } from './brod';
 
-export interface Luka{
-    id:number;
-    naziv : string;
-    brodovi : Brod[];
-    limit:number
+export interface Luka {
+  id: number;
+  name: string;
+  capacity: number;
+  ships: Brod[];
 }

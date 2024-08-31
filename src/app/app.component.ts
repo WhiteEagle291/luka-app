@@ -1,42 +1,53 @@
-// app.component.ts
-
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Brod } from './models/brod';
 import { Store, select } from '@ngrx/store';
-import { AppState } from './store/brod.reducer';
-import { selectAllBrods } from './store/brod.selector'; // Ensure this path is correct
-import { BrodService } from './services/brodovi.service';
+import { AppState } from './app.state'; // Update this path if necessary
+import { selectAllBrods } from './store/brod.selector';
+import { Brod } from './models/brod';
+import * as BrodActions from './store/brod.action';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  luka = {
+    id: 1,
+    name: 'Main Port',
+    capacity: 10,
+    ships: [] as Brod[]
+  };
 
   brodovi$: Observable<Brod[]>; // Observable of array of Brods
-  title: any;
 
-  constructor(private store: Store<AppState>,private brodService: BrodService) {
+  constructor(private store: Store<AppState>) {
     this.brodovi$ = this.store.pipe(select(selectAllBrods)); // Selecting all brods from store
   }
 
   ngOnInit() {
-    this.brodService.fetchBrods().subscribe();
+    // Dispatch an action to load ships from the store
+    this.store.dispatch(BrodActions.loadBrods());
   }
 
-  addBrod() {
-    const newBrod: Brod = {
-      id: 0, // This will be replaced with a proper integer ID in the service
-      naziv: 'New Ship',
-      vrsta: 'Cargo',
-      posada: 10
-    };
-    this.brodService.addBrod(newBrod);
+  addShipToPort(brod: Brod) {
+    if (this.luka.ships.length < this.luka.capacity) {
+      // Add ship to the port (local state) if the port's capacity is not reached
+      this.luka.ships.push(brod);
+    } else {
+      alert('Port capacity reached! Cannot add more ships.');
+    }
   }
 
-  removeBrod(brodId: number) {
-    this.brodService.removeBrod(brodId); // Dispatching removeBrod action
+  selectShip(brod: Brod) {
+    console.log('Selected Ship:', brod);
+  }
+
+  removeShipFromPort(brod: Brod) {
+    const index = this.luka.ships.findIndex(b => b.id === brod.id);
+    if (index !== -1) {
+      // Remove ship from the port (local state)
+      this.luka.ships.splice(index, 1);
+    }
   }
 }

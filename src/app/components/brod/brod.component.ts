@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+// brod.component.ts
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Brod } from 'src/app/models/brod';
 
 @Component({
@@ -8,19 +9,15 @@ import { Brod } from 'src/app/models/brod';
 })
 export class BrodComponent {
   @Input() brod: Brod | undefined;
-  @Output() shipSelected = new EventEmitter<Brod>();
-  @Output() shipAdded = new EventEmitter<Brod>();
-  @Output() shipRemoved = new EventEmitter<Brod>();
+  @Output() brodRemoved = new EventEmitter<number>();
 
-  selectShip() {
-    this.shipSelected.emit(this.brod);
+  ngOnInit() {
+    console.log('Brod Component Initialized with:', this.brod);
   }
 
-  addShipToScreen() {
-    this.shipAdded.emit(this.brod);
-  }
-
-  removeShipFromScreen() {
-    this.shipRemoved.emit(this.brod);
+  removeBrod() {
+    if (this.brod && this.brod.id) {
+      this.brodRemoved.emit(this.brod.id);
+    }
   }
 }

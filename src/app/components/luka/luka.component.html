@@ -1,2 +1,45 @@
-<h1>Ship and Port App</h1>
-<!-- Implement your UI for ports and related ships if needed -->
+<!-- luka.component.html -->
+<style>
+  .port-details {
+    background-color: #e3f2fd;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 4px;
+  }
+  .ship-form {
+    margin-top: 20px;
+  }
+</style>
+
+<div class="port-details">
+  <h2>{{ luka?.name }}</h2>
+  <p>Port ID: {{ luka?.id }}</p>
+  <p>Port Limit: {{ luka?.capacity }}</p>
+
+  <h3>Ships in Port:</h3>
+  <ul>
+    <li *ngFor="let brod of brodovi$ | async">
+      <app-brod [brod]="brod" (shipRemoved)="removeShip(brod.id)"></app-brod>
+    </li>
+  </ul>
+
+  <div class="ship-form">
+    <h3>Add New Ship</h3>
+    <form [formGroup]="shipForm" (ngSubmit)="addShip()">
+      <label for="naziv">Name:</label>
+      <input id="naziv" formControlName="naziv" type="text">
+
+      <label for="vrsta">Type:</label>
+      <select id="vrsta" formControlName="vrsta">
+        <option value="Warship">Warship</option>
+        <option value="Civilian">Civilian</option>
+        <option value="Cargo">Cargo</option>
+      </select>
+
+      <label for="posada">Crew:</label>
+      <input id="posada" formControlName="posada" type="string">
+
+      <button type="submit">Add Ship</button>
+    </form>
+  </div>
+</div>

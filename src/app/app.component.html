@@ -1,12 +1,22 @@
 <!-- app.component.html -->
+<style>
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 
-<h1>Brods</h1>
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+</style>
 
-<button (click)="addBrod()">Add Brod</button>
-
-<ul>
-  <li *ngFor="let brod of brodovi$ | async">
-    {{ brod.naziv }} - {{ brod.vrsta }} (Posada: {{ brod.posada }})
-    <button (click)="removeBrod(brod.id)">Remove</button>
-  </li>
-</ul>
+<div class="container">
+  <h1>Welcome to My Port and Ships App</h1>
+  <app-login></app-login>
+  <app-luka [luka]="luka"></app-luka>
+</div>
