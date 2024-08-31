@@ -15,6 +15,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { BrodEffects } from './store/brod.effects';
 import { LoginComponent } from './login/login.component';
 import { RouterModule, Routes } from '@angular/router';
+import { lukaReducer } from './store/luka.reducer';
+import { LukaEffects } from './store/luka.effects';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -34,7 +36,10 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({ brodovi: brodReducer }),
+    StoreModule.forRoot({
+      brod: brodReducer,
+      luka: lukaReducer
+    }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
@@ -43,7 +48,7 @@ const routes: Routes = [
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true // If set to true, the connection is established within the Angular zone
     }),
-    EffectsModule.forRoot([BrodEffects]),
+    EffectsModule.forRoot([BrodEffects, LukaEffects]),
     RouterModule.forRoot(routes)
   ],
   providers: [BrodService],

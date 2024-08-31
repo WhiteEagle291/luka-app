@@ -1,18 +1,49 @@
-<!-- brod.component.html -->
 <style>
   .brod-details {
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ddd;
+    border: 1px solid #00bfff;
+    border-radius: 8px;
+    color: #003366;
+    cursor: pointer;
+  }
+
+  .brod-details h3 {
+    margin: 0 0 10px;
+  }
+
+  .brod-details p {
+    margin: 0;
+  }
+
+  .action-buttons {
+    margin-top: 10px;
+  }
+
+  .action-buttons button {
+    background-color: #00bfff;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
     border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .action-buttons button:hover {
+    background-color: #008cba;
   }
 </style>
 
 <div class="brod-details" *ngIf="brod">
   <h3>{{ brod.name }}</h3>
   <p>Type: {{ brod.type }}</p>
-  <p>Crew: {{ brod.crew }}</p>
-  <!-- Removed buttons for select and add, retained remove functionality -->
-  <!-- <button (click)="removeShip()">Remove Ship</button> -->
+  <p>Crew: {{ brod.crew.length }}</p>
+  <div class="action-buttons">
+    <button (click)="onEdit()">Edit</button>
+    <button (click)="onDelete()">Delete</button>
+    <button (click)="onAddUser()">Add User</button>
+  </div>
 </div>

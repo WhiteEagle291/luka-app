@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
 import { BrodService } from '../services/brodovi.service';
 import * as BrodActions from './brod.action';
 
@@ -10,7 +10,7 @@ export class BrodEffects {
   loadBrods$ = createEffect(() =>
     this.actions$.pipe(
       ofType(BrodActions.loadBrods),
-      mergeMap(() =>
+      switchMap(() => 
         this.brodService.fetchBrods().pipe(
           map(brods => BrodActions.loadBrodsSuccess({ brods })),
           catchError(error => of(BrodActions.loadBrodsFailure({ error })))
@@ -22,9 +22,9 @@ export class BrodEffects {
   addBrod$ = createEffect(() =>
     this.actions$.pipe(
       ofType(BrodActions.addBrod),
-      mergeMap(({ brod }) =>
-        this.brodService.addBrod(brod).pipe(
-          map(createdBrod => BrodActions.addBrodSuccess({ brod: createdBrod })),
+      switchMap(action =>
+        this.brodService.addBrod(action.brod).pipe(
+          map(brod => BrodActions.addBrodSuccess({ brod })),
           catchError(error => of(BrodActions.addBrodFailure({ error })))
         )
       )

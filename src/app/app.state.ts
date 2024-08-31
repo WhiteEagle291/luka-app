@@ -1,7 +1,12 @@
+
 // app.state.ts
-import { Brod } from '../app/models/brod';
+
+import { BrodState } from "./store/brod.reducer";
+import { LukaState } from "./store/luka.reducer";
+
+
 
 export interface AppState {
-  brodovi: Brod[];
-  selectedBrod: number;
+  brod: BrodState;
+  luka: LukaState;
 }

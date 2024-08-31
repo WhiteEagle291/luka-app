@@ -1,27 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Luka } from '../models/luka';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({                                        /*sa neta : We use the @Injectable decorator to make these */
 providedIn: 'root'                                     /*services injectable throughout the application.*/
 })
 export class LukaService {
+  removeLuka(lukaId: number) {
+      throw new Error('Method not implemented.');
+  }
   private luke: Luka[] = []; // niz luka                   
   private lukeSubject = new BehaviorSubject<Luka[]>([]);
 
-  constructor() { }
+  private apiUrl = 'http://localhost:3000/ports';
 
-  getPorts() {
-    return this.lukeSubject.asObservable();
+  constructor(private http: HttpClient) { }
+
+  getPorts(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
   }
 
-  addPort(luka: Luka) {
-    this.luke.push(luka);
-    this.lukeSubject.next([...this.luke]);
+  addPort(port: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, port);
   }
 
-  removePort(lukaId: number) {
-    this.luke = this.luke.filter(luka => luka.id !== lukaId);
-    this.lukeSubject.next([...this.luke]);
-  }
 }

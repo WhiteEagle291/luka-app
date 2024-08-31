@@ -20,6 +20,14 @@ export class BrodService {
     return this.http.post<Brod>(this.apiUrl, brod);
   }
 
+  // getShips(): Observable<any[]> {
+  //   return this.http.get<any[]>(this.apiUrl);
+  // }
+
+  // addShip(ship: any): Observable<any> {
+  //   return this.http.post<any>(this.apiUrl, ship);
+  // }
+
   removeBrod(brodId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${brodId}`);
   }

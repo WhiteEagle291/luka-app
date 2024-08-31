@@ -1,13 +1,17 @@
-<!-- src/app/login/login.component.html -->
-<div class="login-container">
-    <h2>Login</h2>
+<!-- Example of a simple login modal -->
+<div *ngIf="showLoginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeLogin()">&times;</span>
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <label for="username">Username:</label>
-      <input id="username" formControlName="username" type="text" />
-  
+      <input id="username" formControlName="username" type="text" required>
+
       <label for="password">Password:</label>
-      <input id="password" formControlName="password" type="password" />
-  
-      <button type="submit">Login</button>
+      <input id="password" formControlName="password" type="password" required>
+
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
     </form>
   </div>
+</div>
+
+

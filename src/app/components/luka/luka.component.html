@@ -1,45 +1,77 @@
 <!-- luka.component.html -->
 <style>
   .port-details {
-    background-color: #e3f2fd;
+    background-color: #e6f7ff;
     padding: 15px;
     margin-top: 15px;
-    border-radius: 4px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #003366;
   }
+
   .ship-form {
     margin-top: 20px;
   }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input, select {
+    width: calc(100% - 22px);
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    background-color: #00bfff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+
+  button:hover {
+    background-color: #008cba;
+  }
 </style>
 
-<div class="port-details">
-  <h2>{{ luka?.name }}</h2>
-  <p>Port ID: {{ luka?.id }}</p>
-  <p>Port Limit: {{ luka?.capacity }}</p>
+<!-- luka.component.html -->
 
-  <h3>Ships in Port:</h3>
+<div *ngIf="luka">
+  <h2>{{ luka.name }}</h2>
+  <p>Capacity: {{ luka.capacity }}</p>
+
+  <h3>Ships in {{ luka.name }}:</h3>
   <ul>
-    <li *ngFor="let brod of brodovi$ | async">
-      <app-brod [brod]="brod" (shipRemoved)="removeShip(brod.id)"></app-brod>
+    <li *ngFor="let brod of brodovi">
+      <app-brod [brod]="brod" (brodRemoved)="removeShip(brod.id)"></app-brod>
     </li>
   </ul>
 
   <div class="ship-form">
     <h3>Add New Ship</h3>
     <form [formGroup]="shipForm" (ngSubmit)="addShip()">
-      <label for="naziv">Name:</label>
-      <input id="naziv" formControlName="naziv" type="text">
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" type="text">
 
-      <label for="vrsta">Type:</label>
-      <select id="vrsta" formControlName="vrsta">
+      <label for="type">Type:</label>
+      <select id="type" formControlName="type">
         <option value="Warship">Warship</option>
         <option value="Civilian">Civilian</option>
         <option value="Cargo">Cargo</option>
       </select>
 
-      <label for="posada">Crew:</label>
-      <input id="posada" formControlName="posada" type="string">
+      <label for="crew">Crew:</label>
+      <input id="crew" formControlName="crew" type="text">
 
-      <button type="submit">Add Ship</button>
+      <button type="submit" [disabled]="!shipForm.valid">Add Ship</button>
     </form>
   </div>
 </div>
