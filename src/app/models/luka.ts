@@ -3,6 +3,6 @@ import { Brod } from './brod';
 export interface Luka {
   id: number;
   name: string;
-  capacity: number;
-  ships: Brod[];
+  limit: number;
+  ships: string[]; // Array of ship IDs or ship names
 }

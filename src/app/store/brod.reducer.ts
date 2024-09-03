@@ -19,28 +19,48 @@ export const initialState: BrodState = brodAdapter.getInitialState({
   error: null,
 });
 
-
 export const brodReducer = createReducer(
   initialState,
-  on(BrodActions.loadBrods, state => ({
+  on(BrodActions.loadBrodsSuccess, (state, { brods }) => ({
     ...state,
-    loading: true,
-    error: null
+    brods
   })),
-  on(BrodActions.loadBrodsSuccess, (state, { brods }) =>
-    brodAdapter.setAll(brods, { ...state, loading: false })
-  ),
-  on(BrodActions.loadBrodsFailure, (state, { error }) => ({
+  on(BrodActions.addBrodSuccess, (state, { brod }) => ({
     ...state,
-    loading: false,
+    brods: [...state.brods, brod]
+  })),
+  on(BrodActions.removeBrodSuccess, (state, { brodId }) => ({
+    ...state,
+    brods: state.brods.filter((brod: { id: number; }) => brod.id !== brodId)
+  })),
+  on(BrodActions.loadBrodsFailure, BrodActions.addBrodFailure, BrodActions.removeBrodFailure, (state, { error }) => ({
+    ...state,
     error
-  })),
-  on(BrodActions.addBrodSuccess, (state, { brod }) =>
-    brodAdapter.addOne(brod, state)
-  ),
-  on(BrodActions.removeBrodSuccess, (state, { brodId }) =>
-    brodAdapter.removeOne(brodId, state)
-  ),
+  }))
 );
+
+
+// export const brodReducer = createReducer(
+//   initialState,
+//   on(BrodActions.loadBrods, state => ({
+//     ...state,
+//     loading: true,
+//     error: null
+//   })),
+//   on(BrodActions.loadBrodsSuccess, (state, { brods }) =>
+//     brodAdapter.setAll(brods, { ...state, loading: false })
+//   ),
+//   on(BrodActions.loadBrodsFailure, (state, { error }) => ({
+//     ...state,
+//     loading: false,
+//     error
+//   })),
+//   on(BrodActions.addBrodSuccess, (state, { brod }) =>
+//     brodAdapter.addOne(brod, state)
+//   ),
+//   on(BrodActions.removeBrodSuccess, (state, { brodId }) =>
+//     brodAdapter.removeOne(brodId, state)
+//   ),
+// );
 
 export const { selectAll, selectIds, selectEntities, selectTotal } = brodAdapter.getSelectors();

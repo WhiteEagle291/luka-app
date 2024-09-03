@@ -1,7 +1,8 @@
 // brod.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Brod } from 'src/app/models/brod';
-
+import * as BrodActions from "src/app/store/brod.action"
 @Component({
   selector: 'app-brod',
   templateUrl: './brod.component.html',
@@ -12,19 +13,21 @@ export class BrodComponent {
   @Output() brodRemoved = new EventEmitter<number>();
   @Output() brodAction = new EventEmitter<{ action: string, brod: Brod }>();
 
+  constructor(private store: Store){}
   ngOnInit() {
     console.log('Brod Component Initialized with:', this.brod);
   }
 
   onEdit() {
     if (this.brod) {
-      this.brodAction.emit({ action: 'edit', brod: this.brod });
+      //this.store.dispatch(BrodActions.removeBrod({ brodId: this.brod.id })); // Dispatch removeBrod action
     }
   }
 
   onDelete() {
-    if (this.brod) {
-      this.brodAction.emit({ action: 'delete', brod: this.brod });
+    if (this.brod && this.brod.id) {
+      
+      this.store.dispatch(BrodActions.removeBrod({ brodId: this.brod.id })); // Dispatch removeBrod action
     }
   }
 

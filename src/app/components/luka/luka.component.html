@@ -9,7 +9,8 @@
     color: #003366;
   }
 
-  .ship-form {
+  .ship-form,
+  .port-form {
     margin-top: 20px;
   }
 
@@ -18,7 +19,8 @@
     margin-bottom: 5px;
   }
 
-  input, select {
+  input,
+  select {
     width: calc(100% - 22px);
     padding: 8px 10px;
     margin-bottom: 15px;
@@ -42,36 +44,65 @@
   }
 </style>
 
-<!-- luka.component.html -->
+<!-- Port Form -->
+<div class="port-form">
+  <h3>Add New Port</h3>
+  <form [formGroup]="portForm" (ngSubmit)="addPort()">
+    <label for="portName">Port Name:</label>
+    <input id="portName" formControlName="name" type="text" />
 
-<div *ngIf="luka">
-  <h2>{{ luka.name }}</h2>
-  <p>Capacity: {{ luka.capacity }}</p>
+    <label for="portLimit">Port Limit:</label>
+    <input id="portLimit" formControlName="limit" type="number" />
 
-  <h3>Ships in {{ luka.name }}:</h3>
-  <ul>
-    <li *ngFor="let brod of brodovi">
-      <app-brod [brod]="brod" (brodRemoved)="removeShip(brod.id)"></app-brod>
-    </li>
-  </ul>
+    <button type="submit" [disabled]="!portForm.valid">Add Port</button>
+  </form>
+</div>
 
-  <div class="ship-form">
+<!-- Existing Ship Form and Port Selection -->
+<div *ngIf="ports$ | async as ports">
+  <h2>Select a Port</h2>
+  <form [formGroup]="shipForm" (ngSubmit)="addShip()">
+    <select formControlName="portId">
+      <option *ngFor="let port of ports" [value]="port.id">{{ port.name }}</option>
+    </select>
+  
     <h3>Add New Ship</h3>
-    <form [formGroup]="shipForm" (ngSubmit)="addShip()">
-      <label for="name">Name:</label>
-      <input id="name" formControlName="name" type="text">
+    <label for="name">Name:</label>
+    <input id="name" formControlName="name" type="text" />
+  
+    <label for="type">Type:</label>
+    <select id="type" formControlName="type">
+      <option value="Warship">Warship</option>
+      <option value="Civilian">Civilian</option>
+      <option value="Cargo">Cargo</option>
+    </select>
+  
+    <label for="crew">Crew:</label>
+    <input id="crew" formControlName="crew" type="text" />
+  
+    <button type="submit" [disabled]="!shipForm.valid">Add Ship</button>
+  </form>
 
-      <label for="type">Type:</label>
-      <select id="type" formControlName="type">
-        <option value="Warship">Warship</option>
-        <option value="Civilian">Civilian</option>
-        <option value="Cargo">Cargo</option>
-      </select>
-
-      <label for="crew">Crew:</label>
-      <input id="crew" formControlName="crew" type="text">
-
-      <button type="submit" [disabled]="!shipForm.valid">Add Ship</button>
-    </form>
+  <!-- Display Ships Based on Selected Port -->
+  <div *ngIf="selectedPortId !== null && filteredShips.length > 0">
+    <h3>Ships in Selected Port:</h3>
+    <ul>
+      <li *ngFor="let brod of filteredShips">
+        <app-brod [brod]="brod" (brodRemoved)="removeShip(brod.id)"></app-brod>
+      </li>
+    </ul>
   </div>
+
+  <!-- Remove Default Display -->
+  <!-- The following block should be removed or updated -->
+  <!--
+  <div *ngIf="luka">
+    <h3>Ships in {{ luka.name }}:</h3>
+    <ul>
+      <li *ngFor="let brod of brodovi">
+        <app-brod [brod]="brod" (brodRemoved)="removeShip(brod.id)"></app-brod>
+      </li>
+    </ul>
+  </div>
+  -->
 </div>

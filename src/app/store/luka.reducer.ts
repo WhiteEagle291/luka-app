@@ -5,13 +5,13 @@ import { Luka } from '../models/luka';
 import * as LukaActions from './luka.action';
 
 export interface LukaState {
-  lukas: Luka[];
+  ports: Luka[];
   loading: boolean;
   error: any;
 }
 
 export const initialState: LukaState = {
-  lukas: [],
+  ports: [],
   loading: false,
   error: null
 };
@@ -26,7 +26,7 @@ export const lukaReducer = createReducer(
   on(LukaActions.loadLukasSuccess, (state, { lukas }) => ({
     ...state,
     loading: false,
-    lukas
+    ports: lukas
   })),
   on(LukaActions.loadLukasFailure, (state, { error }) => ({
     ...state,
@@ -35,10 +35,16 @@ export const lukaReducer = createReducer(
   })),
   on(LukaActions.addLukaSuccess, (state, { luka }) => ({
     ...state,
-    lukas: [...state.lukas, luka]
+    ports: [...state.ports, luka]
   })),
   on(LukaActions.removeLukaSuccess, (state, { lukaId }) => ({
     ...state,
-    lukas: state.lukas.filter(luka => luka.id !== lukaId)
+    ports: state.ports.filter(luka => luka.id !== lukaId)
   })),
+    // Handle the addPort action
+    on(LukaActions.addPort, (state, { port }) => ({
+      ...state,
+      ports: [...state.ports, port],
+    }))
 );
+

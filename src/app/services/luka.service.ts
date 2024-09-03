@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Luka } from '../models/luka';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable } from 'rxjs';
 
 
 import { HttpClient } from '@angular/common/http';
@@ -18,6 +18,8 @@ export class LukaService {
   private apiUrl = 'http://localhost:3000/ports';
 
   constructor(private http: HttpClient) { }
+
+
 
   getPorts(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);

@@ -14,3 +14,16 @@ export const addBrodFailure = createAction('[Brod] Add Brod Failure', props<{ er
 export const removeBrod = createAction('[Brod] Remove Brod', props<{ brodId: number }>());
 export const removeBrodSuccess = createAction('[Brod] Remove Brod Success', props<{ brodId: number }>());
 export const removeBrodFailure = createAction('[Brod] Remove Brod Failure', props<{ error: any }>());
+
+
+
+// export const addBrod = createAction(
+//     '[Brod] Add Brod',
+//     props<{ brod: Brod }>()
+//   );
+  
+  export const deleteBrod = createAction(
+    '[Brod] Delete Brod',
+    props<{ id: number }>()
+  );
+  

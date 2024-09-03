@@ -14,3 +14,22 @@ export const addLukaFailure = createAction('[Luka] Add Luka Failure', props<{ er
 export const removeLuka = createAction('[Luka] Remove Luka', props<{ lukaId: number }>());
 export const removeLukaSuccess = createAction('[Luka] Remove Luka Success', props<{ lukaId: number }>());
 export const removeLukaFailure = createAction('[Luka] Remove Luka Failure', props<{ error: any }>());
+
+
+// Define the addPort action
+export const addPort = createAction(
+    '[Luka] Add Port',
+    props<{ port: Luka }>()
+  );
+
+
+  // Success and Failure actions for addPort
+export const addPortSuccess = createAction(
+    '[Luka] Add Port Success',
+    props<{ port: Luka }>()
+  );
+  
+  export const addPortFailure = createAction(
+    '[Luka] Add Port Failure',
+    props<{ error: any }>()
+  );

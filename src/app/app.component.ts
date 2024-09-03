@@ -8,6 +8,7 @@ import * as BrodActions from './store/brod.action';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './auth.service';
 import { Luka } from './models/luka';
+import * as LukaActions from './store/luka.action'
 
 @Component({
   selector: 'app-root',
@@ -20,20 +21,26 @@ export class AppComponent implements OnInit, AfterViewInit {
   title = 'Ship and Port Management';
   isLoggedIn = false;
 
-  luka: Luka | undefined;  // Updated to allow dynamic assignment
-  brodovi: Brod[] = []; // Store the ships received after login
+  luka: Luka = { id: 0, name: 'Default Port', limit: 10 ,ships:[]}; // Assign a default value to luka
+  brodovi: Brod[] = []; 
 
 
-  //brodovi$: Observable<Brod[]>; // Observable of array of Brods
+  //brods$: Observable<Brod[]>; // Observable of array of Brods
 
   constructor(private store: Store<AppState>,private authService: AuthService) {
-    //this.brodovi$ = this.store.pipe(select(selectAllBrods)); // Selecting all brods from store
+    //this.brods$= this.store.pipe(select(selectAllBrods)); // Selecting all brods from store
   }
 
   ngOnInit() {
     // Dispatch an action to load ships from the store
-    //this.store.dispatch(BrodActions.loadBrods());
-
+    this.store.dispatch(BrodActions.loadBrods());
+    this.store.dispatch(LukaActions.loadLukas());
+    this.luka = {
+      id :0,
+      name:"Main port",
+      limit: 10,
+      ships: []
+    }
     this.authService.isLoggedIn$.subscribe(loggedIn => {
       this.isLoggedIn = loggedIn;
     });
@@ -45,13 +52,15 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   handleLoginSuccess(data: { luka: Luka; brodovi: Brod[] }) {
-    console.log('Handle Login Success called with:', data);
+    console.log('Login success event received:', data);
     this.luka = data.luka;
     this.brodovi = data.brodovi;
+    console.log('Luka data:', this.luka);  // Debug log
+    console.log('Brodovi data:', this.brodovi);  // Debug log
   }
 
-  addShipToPort(brod: Brod) {
-    if (this.luka && this.luka.ships.length < this.luka.capacity) {
+  addShipToPort(brod: string) {
+    if (this.luka && this.luka.ships.length < this.luka.limit) {
       this.luka.ships.push(brod);
     } else {
       alert('Port capacity reached! Cannot add more ships.');
@@ -62,14 +71,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     console.log('Selected Ship:', brod);
   }
 
-  removeShipFromPort(brod: Brod) {
-    if (this.luka) {
-      const index = this.luka.ships.findIndex(b => b.id === brod.id);
-      if (index !== -1) {
-        this.luka.ships.splice(index, 1);
-      }
-    }
-  }
+  // removeShipFromPort(brod: Brod) {
+  //   if (this.luka) {
+  //     const index = this.luka.ships.findIndex(b => b.id === brod.id);
+  //     if (index !== -1) {
+  //       this.luka.ships.splice(index, 1);
+  //     }
+  //   }
+  // }
 
   openLogin(): void {
     setTimeout(() => {
