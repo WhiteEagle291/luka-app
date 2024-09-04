@@ -2,8 +2,8 @@
 
 import { Component, OnInit, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, startWith } from 'rxjs';
 import { Brod } from '../../models/brod';
 import { Luka } from '../../models/luka';
 import { AppState } from 'src/app/app.state';
@@ -26,6 +26,8 @@ export class LukaComponent implements OnInit {
   ports$: Observable<Luka[]>;  
   shipForm: FormGroup;
   portForm: FormGroup;
+  searchControl: FormControl = new FormControl('');
+  
   data: any;
 
   ports: Luka[] = [];
@@ -69,6 +71,33 @@ export class LukaComponent implements OnInit {
       this.brodovi = brodovi;
       this.filterShips(); // Ensure correct filtering
     });
+
+    // Combine the ships observable, port ID observable, and search input observable
+    combineLatest([
+      this.store.select(selectAllBrods),
+      this.shipForm.get('portId')!.valueChanges.pipe(
+        startWith(this.shipForm.get('portId')?.value),
+        map(portId => Number(portId)),
+        distinctUntilChanged()
+      ),
+      this.searchControl.valueChanges.pipe(
+        startWith(''),
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+    ]).pipe(
+      map(([ships, selectedPortId, searchTerm]) => {
+        return ships.filter((ship: Brod) => 
+          ship.port && ship.port.id === selectedPortId &&
+          ship.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      })
+    ).subscribe(filteredShips => {
+      this.filteredShips = filteredShips;
+    });
+
+    this.shipForm.get('portId')?.setValue(this.shipForm.get('portId')?.value);
+
   
     this.shipForm.get('portId')?.valueChanges.subscribe((portId: any) => {
       const parsedPortId = Number(portId);
