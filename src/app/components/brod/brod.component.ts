@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Brod } from 'src/app/models/brod';
 import * as BrodActions from "src/app/store/brod.action"
+import { BrodService } from 'src/app/services/brodovi.service';
 @Component({
   selector: 'app-brod',
   templateUrl: './brod.component.html',
@@ -13,7 +14,9 @@ export class BrodComponent {
   @Output() brodRemoved = new EventEmitter<number>();
   @Output() brodAction = new EventEmitter<{ action: string, brod: Brod }>();
 
-  constructor(private store: Store){}
+  newUser: string = '';
+
+  constructor(private store: Store,private brodService: BrodService){}
   ngOnInit() {
     console.log('Brod Component Initialized with:', this.brod);
   }
@@ -32,8 +35,16 @@ export class BrodComponent {
   }
 
   onAddUser() {
-    if (this.brod) {
-      this.brodAction.emit({ action: 'addUser', brod: this.brod });
+    if (this.brod && this.newUser.trim()) {
+      this.brodService.addUserToCrew(this.brod.id, this.newUser.trim()).subscribe(
+        updatedBrod => {
+          this.brod = updatedBrod; // Update the component's brod object with the returned value
+          this.newUser = ''; // Clear the input field
+        },
+        error => {
+          console.error('Error adding user:', error);
+        }
+      );
     }
   }
 

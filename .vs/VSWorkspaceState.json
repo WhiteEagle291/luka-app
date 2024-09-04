@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\services",
+    "\\src\\app\\store"
+  ],
+  "SelectedNode": "\\src\\app\\store\\brod.effects.ts",
+  "PreviewInSolutionExplorer": false
+}

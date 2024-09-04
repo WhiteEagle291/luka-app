@@ -40,10 +40,13 @@
 <div class="brod-details" *ngIf="brod">
   <h3>{{ brod.name }}</h3>
   <p>Type: {{ brod.type }}</p>
-  <p>Crew: {{ brod.crew.length }}</p>
+  <p>Crew: {{ brod.crew.join(', ') }}</p> 
   <div class="action-buttons">
     <button (click)="onEdit()">Edit</button>
     <button (click)="onDelete()">Delete</button>
+  </div>
+  <div class="add-user">
+    <input type="text" [(ngModel)]="newUser" placeholder="Enter user name" />
     <button (click)="onAddUser()">Add User</button>
   </div>
 </div>
