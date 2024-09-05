@@ -13,6 +13,12 @@ export class BrodService {
   constructor(private http: HttpClient) {}
 
 
+   // Method to update an existing ship
+   updateBrod(brod: Brod): Observable<Brod> {
+    return this.http.put<Brod>(`${this.apiUrl}/${brod.id}`, brod);
+  }
+
+
   // This method sends a POST request to add a user to the crew of a specific ship
   addUserToCrew(shipId: number, username: string): Observable<Brod> {
     return this.http.post<Brod>(`${this.apiUrl}/${shipId}/addUser`, { username });

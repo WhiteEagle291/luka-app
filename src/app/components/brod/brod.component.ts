@@ -15,6 +15,8 @@ export class BrodComponent {
   @Output() brodAction = new EventEmitter<{ action: string, brod: Brod }>();
 
   newUser: string = '';
+  isEditMode: boolean = false;
+  editedBrod: any = {};
 
   constructor(private store: Store,private brodService: BrodService){}
   ngOnInit() {
@@ -23,7 +25,34 @@ export class BrodComponent {
 
   onEdit() {
     if (this.brod) {
-      //this.store.dispatch(BrodActions.removeBrod({ brodId: this.brod.id })); // Dispatch removeBrod action
+      // Open the popup and clone the current brod details
+      this.isEditMode = true;
+      this.editedBrod = { ...this.brod, crewString: this.brod.crew.join(', ') };
+    }
+  }
+
+  onCancelEdit() {
+    // Close the popup without saving
+    this.isEditMode = false;
+  }
+
+  onSaveEdit() {
+    if (this.brod) {
+      // Convert the comma-separated crew string into an array
+      const updatedCrew = this.editedBrod.crewString.split(',').map((crewMember: string) => crewMember.trim());
+
+      const updatedBrod: Brod = {
+        ...this.brod,
+        name: this.editedBrod.name,
+        type: this.editedBrod.type,
+        crew: updatedCrew
+      };
+
+      // Dispatch the updateBrod action to update the ship
+      this.store.dispatch(BrodActions.updateBrod({ brod: updatedBrod }));
+
+      // Close the popup after saving
+      this.isEditMode = false;
     }
   }
 

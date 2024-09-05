@@ -26,4 +26,22 @@ export const removeBrodFailure = createAction('[Brod] Remove Brod Failure', prop
     '[Brod] Delete Brod',
     props<{ id: number }>()
   );
+
+/////////////// UPDATE
+  // Define an action to update a ship (brod)
+export const updateBrod = createAction(
+  '[Brod] Update Brod',
+  props<{ brod: Brod }>()  // Payload contains the updated brod object
+);
+
+// Optionally: Define success/failure actions for better effect handling
+export const updateBrodSuccess = createAction(
+  '[Brod] Update Brod Success',
+  props<{ brod: Brod }>()
+);
+
+export const updateBrodFailure = createAction(
+  '[Brod] Update Brod Failure',
+  props<{ error: any }>()
+);
   

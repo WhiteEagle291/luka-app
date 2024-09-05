@@ -43,6 +43,20 @@ export class BrodEffects {
     )
   );
 
+
+  // Effect to handle updating a ship (brod)
+  updateBrod$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(BrodActions.updateBrod),  // Use BrodActions.updateBrod to reference the action
+      mergeMap(action =>
+        this.brodService.updateBrod(action.brod).pipe(
+          map((updatedBrod) => BrodActions.updateBrodSuccess({ brod: updatedBrod })),  // Success action
+          catchError((error) => of(BrodActions.updateBrodFailure({ error })))  // Failure action
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private brodService: BrodService

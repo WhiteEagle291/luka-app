@@ -21,6 +21,13 @@ export const initialState: BrodState = brodAdapter.getInitialState({
 
 export const brodReducer = createReducer(
   initialState,
+   // Handle updateBrodSuccess action
+   on(BrodActions.updateBrodSuccess, (state, { brod }) => ({
+    ...state,
+    brods: state.brods.map((b: Brod) =>  // Explicitly define the type of 'b' as Brod
+      b.id === brod.id ? brod : b  // Replace the updated brod in the brods array
+    )
+  })),
   on(BrodActions.loadBrodsSuccess, (state, { brods }) => ({
     ...state,
     brods

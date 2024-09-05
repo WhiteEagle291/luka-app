@@ -35,6 +35,61 @@
   .action-buttons button:hover {
     background-color: #008cba;
   }
+
+  .edit-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.edit-popup h3 {
+  margin-top: 0;
+}
+
+.edit-popup label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.edit-popup input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+}
+
+.edit-popup .action-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-popup .action-buttons button {
+  padding: 8px 15px;
+  background-color: #00bfff;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-popup .action-buttons button:hover {
+  background-color: #008cba;
+}
+
+
 </style>
 
 <div class="brod-details" *ngIf="brod">
@@ -48,5 +103,25 @@
   <div class="add-user">
     <input type="text" [(ngModel)]="newUser" placeholder="Enter user name" />
     <button (click)="onAddUser()">Add User</button>
+  </div>
+</div>
+
+<!-- Popup Edit Form -->
+<div class="edit-popup" *ngIf="isEditMode">
+  <div class="edit-popup-content">
+    <h3>Edit Ship Details</h3>
+    <label for="name">Ship Name:</label>
+    <input type="text" [(ngModel)]="editedBrod.name" id="name" />
+
+    <label for="type">Ship Type:</label>
+    <input type="text" [(ngModel)]="editedBrod.type" id="type" />
+
+    <label for="crew">Crew (comma-separated):</label>
+    <input type="text" [(ngModel)]="editedBrod.crewString" id="crew" />
+
+    <div class="action-buttons">
+      <button (click)="onSaveEdit()">Save</button>
+      <button (click)="onCancelEdit()">Cancel</button>
+    </div>
   </div>
 </div>
