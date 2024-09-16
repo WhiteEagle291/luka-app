@@ -36,7 +36,6 @@ export class LukaEffects {
     )
   );
 
-    // Effect for adding a port
     addPort$ = createEffect(() =>
       this.actions$.pipe(
         ofType(LukaActions.addPort),

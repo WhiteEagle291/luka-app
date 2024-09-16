@@ -1,4 +1,4 @@
-// brod.component.ts
+
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Brod } from 'src/app/models/brod';
@@ -25,20 +25,20 @@ export class BrodComponent {
 
   onEdit() {
     if (this.brod) {
-      // Open the popup and clone the current brod details
+      // Otvara se popup i kloniraju se podaci trenutni , pa se onda menjaju
       this.isEditMode = true;
       this.editedBrod = { ...this.brod, crewString: this.brod.crew.join(', ') };
     }
   }
 
   onCancelEdit() {
-    // Close the popup without saving
+    // Zatvori pop up ali ne cuva se promenjeno
     this.isEditMode = false;
   }
 
   onSaveEdit() {
     if (this.brod) {
-      // Convert the comma-separated crew string into an array
+      // Dodaje se zarez nakon imena clana posade
       const updatedCrew = this.editedBrod.crewString.split(',').map((crewMember: string) => crewMember.trim());
 
       const updatedBrod: Brod = {
@@ -48,10 +48,10 @@ export class BrodComponent {
         crew: updatedCrew
       };
 
-      // Dispatch the updateBrod action to update the ship
+    
       this.store.dispatch(BrodActions.updateBrod({ brod: updatedBrod }));
 
-      // Close the popup after saving
+     
       this.isEditMode = false;
     }
   }
@@ -59,7 +59,7 @@ export class BrodComponent {
   onDelete() {
     if (this.brod && this.brod.id) {
       
-      this.store.dispatch(BrodActions.removeBrod({ brodId: this.brod.id })); // Dispatch removeBrod action
+      this.store.dispatch(BrodActions.removeBrod({ brodId: this.brod.id })); 
     }
   }
 
@@ -67,8 +67,8 @@ export class BrodComponent {
     if (this.brod && this.newUser.trim()) {
       this.brodService.addUserToCrew(this.brod.id, this.newUser.trim()).subscribe(
         updatedBrod => {
-          this.brod = updatedBrod; // Update the component's brod object with the returned value
-          this.newUser = ''; // Clear the input field
+          this.brod = updatedBrod; 
+          this.newUser = ''; 
         },
         error => {
           console.error('Error adding user:', error);

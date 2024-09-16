@@ -21,33 +21,35 @@ export class AppComponent implements OnInit, AfterViewInit {
   title = 'Ship and Port Management';
   isLoggedIn = false;
 
-  luka: Luka = { id: 0, name: 'Default Port', limit: 10 ,ships:[]}; // Assign a default value to luka
+  luka: Luka = { id: 0, name: 'Default Ime', limit: 10 ,ships:[]}; 
   brodovi: Brod[] = []; 
 
 
   //brods$: Observable<Brod[]>; // Observable of array of Brods
 
   constructor(private store: Store<AppState>,private authService: AuthService) {
-    //this.brods$= this.store.pipe(select(selectAllBrods)); // Selecting all brods from store
+    //this.brods$= this.store.pipe(select(selectAllBrods)); 
   }
 
   ngOnInit() {
-    // Dispatch an action to load ships from the store
+    
+     localStorage.removeItem('access_token');  
+     
+
     this.store.dispatch(BrodActions.loadBrods());
     this.store.dispatch(LukaActions.loadLukas());
-    this.luka = {
-      id :0,
-      name:"Main port",
-      limit: 10,
-      ships: []
-    }
-    this.authService.isLoggedIn$.subscribe(loggedIn => {
-      this.isLoggedIn = loggedIn;
-    });
+
+         this.authService.isLoggedIn$.subscribe((loggedIn) => {
+          this.isLoggedIn = loggedIn;
+      
+          if (this.isLoggedIn) {
+            this.store.dispatch(BrodActions.loadBrods());
+            this.store.dispatch(LukaActions.loadLukas());
+          }
+        });
   }
 
   ngAfterViewInit() {
-    // Ensure loginComponent is available after view initialization
     console.log('LoginComponent after view init:', this.loginComponent);
   }
 
@@ -55,8 +57,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     console.log('Login success event received:', data);
     this.luka = data.luka;
     this.brodovi = data.brodovi;
-    console.log('Luka data:', this.luka);  // Debug log
-    console.log('Brodovi data:', this.brodovi);  // Debug log
+    this.isLoggedIn = true; 
   }
 
   addShipToPort(brod: string) {
@@ -71,14 +72,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     console.log('Selected Ship:', brod);
   }
 
-  // removeShipFromPort(brod: Brod) {
-  //   if (this.luka) {
-  //     const index = this.luka.ships.findIndex(b => b.id === brod.id);
-  //     if (index !== -1) {
-  //       this.luka.ships.splice(index, 1);
-  //     }
-  //   }
-  // }
+ 
 
   openLogin(): void {
     setTimeout(() => {
@@ -87,18 +81,14 @@ export class AppComponent implements OnInit, AfterViewInit {
       } else {
         console.error('LoginComponent is still not initialized.');
       }
-    }, 0); // Delay the call to ensure the view has been initialized
+    }, 0); 
   }
 
 
   onLogout() {
     this.authService.logout();
     console.log('Logout successful');
+    this.isLoggedIn = false;  
   }
 
-  // Implement displayShipsAndPorts to display the data
-  displayShipsAndPorts(data: { luka: Luka, brodovi: Brod[] }) {
-    this.luka = data.luka;
-    this.brodovi = data.brodovi;
-  }
 }

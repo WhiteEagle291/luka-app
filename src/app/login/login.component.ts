@@ -11,7 +11,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   showLoginModal = false;
   
-   // Output event to notify the parent component
+
    @Output() loginSuccess = new EventEmitter<{ luka: any; brodovi: any[] }>();
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
@@ -28,17 +28,26 @@ export class LoginComponent {
   closeLogin(): void {
     this.showLoginModal = false;
   }
+
   onLogin(): void {
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
       this.authService.login(username, password).subscribe({
         next: (response) => {
+          const currentTime = new Date().getTime();
+          const expirationTime = currentTime + 10 * 60 * 1000; 
+        
           localStorage.setItem('access_token', response.access_token);
+          localStorage.setItem('token_expiration', expirationTime.toString());
+        
           this.authService.setLoginState(true);
           this.closeLogin();
-  
-          // Notify parent component with the data
-          console.log('Ships and Ports:', response.ships);
+        
+         
+          setTimeout(() => {
+            this.authService.logout(); 
+          }, 10 * 60 * 1000);
+        
           this.loginSuccess.emit({ luka: response.luka, brodovi: response.ships });
         },
         error: (error) => {

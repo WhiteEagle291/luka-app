@@ -1,4 +1,4 @@
-<!-- src/app/app.component.html -->
+
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -79,17 +79,10 @@
 
 <div class="container">
   <h1>Welcome to Ship and Port Management</h1>
-    <app-luka [luka]="luka" [brodovi]="brodovi"></app-luka>
+  <app-luka [isLoggedIn]="isLoggedIn" [luka]="luka" [brodovi]="brodovi"></app-luka>
 </div>
 
-<app-login (loginSuccess)="handleLoginSuccess($event)"></app-login>
-
-<!-- Display ships and ports -->
-<div *ngIf="brodovi.length > 0">
-  <div *ngFor="let brod of brodovi">
-    <app-brod [brod]="brod"></app-brod>
-  </div>
-</div>
+<app-login *ngIf="!isLoggedIn" (loginSuccess)="handleLoginSuccess($event)"></app-login>
 
 
 

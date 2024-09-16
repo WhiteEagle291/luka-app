@@ -1,4 +1,4 @@
-// src/app/store/luka.selector.ts
+
 import { createSelector } from '@ngrx/store';
 import { AppState } from '../app.state';
 import { LukaState } from './luka.reducer';

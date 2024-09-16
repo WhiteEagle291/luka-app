@@ -44,18 +44,29 @@ export class BrodEffects {
   );
 
 
-  // Effect to handle updating a ship (brod)
+  // Efekt za updejt broda
   updateBrod$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(BrodActions.updateBrod),  // Use BrodActions.updateBrod to reference the action
+      ofType(BrodActions.updateBrod),  
       mergeMap(action =>
         this.brodService.updateBrod(action.brod).pipe(
-          map((updatedBrod) => BrodActions.updateBrodSuccess({ brod: updatedBrod })),  // Success action
-          catchError((error) => of(BrodActions.updateBrodFailure({ error })))  // Failure action
+          map((updatedBrod) => BrodActions.updateBrodSuccess({ brod: updatedBrod })),  
+          catchError((error) => of(BrodActions.updateBrodFailure({ error })))  
         )
       )
     )
   );
+
+
+    // Efekt za ucitavanje brodova na osnovu port id
+    loadBrodsByPortId$ = createEffect(() => this.actions$.pipe(
+      ofType(BrodActions.loadBrodsByPortId),
+      mergeMap(action => this.brodService.getShipsByPortId(action.portId)
+        .pipe(
+          map(brods => ({ type: '[Brod List] Brods Loaded Success', payload: brods })),
+          catchError(() => of({ type: '[Brod List] Brods Loaded Error' }))
+        ))
+    ));
 
   constructor(
     private actions$: Actions,

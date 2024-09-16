@@ -4,5 +4,5 @@ export interface Luka {
   id: number;
   name: string;
   limit: number;
-  ships: string[]; // Array of ship IDs or ship names
+  ships: string[]; 
 }

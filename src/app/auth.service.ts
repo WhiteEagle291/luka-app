@@ -6,33 +6,47 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/auth'; // or other relevant endpoint
+  private apiUrl = 'http://localhost:3000/auth'; 
   private loggedIn = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.loggedIn.asObservable();
 
   constructor(private http: HttpClient) {
-    // Initialize login state based on token presence or other logic
     const token = localStorage.getItem('access_token');
-    this.loggedIn.next(!!token); // Convert token existence to boolean
+    if (this.isValidToken(token)) {
+      this.loggedIn.next(true);
+    } else {
+      this.loggedIn.next(false);
+    }
+    this.loggedIn.next(!!token); 
   }
 
-  // Modify methods to work with your actual endpoints
+
+
+  private isValidToken(token: string | null): boolean {
+    if (!token) return false;
+  
+    const expirationTime = localStorage.getItem('token_expiration');
+    if (!expirationTime) return false;
+  
+    const currentTime = new Date().getTime(); 
+    if (currentTime > +expirationTime) {
+      this.logout(); 
+      return false;
+    }
+  
+    return true; 
+  }
+
   login(username: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { username, password });
   }
 
   logout(): void {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('token_expiration');
     this.loggedIn.next(false);
   }
 
-  // Remove or update this method as it is related to a non-existent /protected route
-  getProtectedData(): Observable<any> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-    });
-    return this.http.get<any>(`${this.apiUrl}/some-existing-endpoint`, { headers });
-  }
 
   setLoginState(isLoggedIn: boolean): void {
     this.loggedIn.next(isLoggedIn);

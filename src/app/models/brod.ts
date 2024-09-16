@@ -8,6 +8,6 @@ export interface Brod {
   name: string;
   type: string;
   crew: string[];
-  port: Luka;  // Allow port to be null
-  portId: number | null; // portId to track the port ID
+  port: Luka; 
+  portId: number | null; 
 }

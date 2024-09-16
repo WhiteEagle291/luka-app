@@ -41,7 +41,6 @@ export const lukaReducer = createReducer(
     ...state,
     ports: state.ports.filter(luka => luka.id !== lukaId)
   })),
-    // Handle the addPort action
     on(LukaActions.addPort, (state, { port }) => ({
       ...state,
       ports: [...state.ports, port],

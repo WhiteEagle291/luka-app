@@ -1,4 +1,4 @@
-// brod.reducer.ts
+
 import { Action, createReducer, on } from '@ngrx/store';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { Brod } from '../models/brod';
@@ -21,11 +21,11 @@ export const initialState: BrodState = brodAdapter.getInitialState({
 
 export const brodReducer = createReducer(
   initialState,
-   // Handle updateBrodSuccess action
+  
    on(BrodActions.updateBrodSuccess, (state, { brod }) => ({
     ...state,
-    brods: state.brods.map((b: Brod) =>  // Explicitly define the type of 'b' as Brod
-      b.id === brod.id ? brod : b  // Replace the updated brod in the brods array
+    brods: state.brods.map((b: Brod) =>  
+      b.id === brod.id ? brod : b  
     )
   })),
   on(BrodActions.loadBrodsSuccess, (state, { brods }) => ({
@@ -47,27 +47,5 @@ export const brodReducer = createReducer(
 );
 
 
-// export const brodReducer = createReducer(
-//   initialState,
-//   on(BrodActions.loadBrods, state => ({
-//     ...state,
-//     loading: true,
-//     error: null
-//   })),
-//   on(BrodActions.loadBrodsSuccess, (state, { brods }) =>
-//     brodAdapter.setAll(brods, { ...state, loading: false })
-//   ),
-//   on(BrodActions.loadBrodsFailure, (state, { error }) => ({
-//     ...state,
-//     loading: false,
-//     error
-//   })),
-//   on(BrodActions.addBrodSuccess, (state, { brod }) =>
-//     brodAdapter.addOne(brod, state)
-//   ),
-//   on(BrodActions.removeBrodSuccess, (state, { brodId }) =>
-//     brodAdapter.removeOne(brodId, state)
-//   ),
-// );
 
 export const { selectAll, selectIds, selectEntities, selectTotal } = brodAdapter.getSelectors();

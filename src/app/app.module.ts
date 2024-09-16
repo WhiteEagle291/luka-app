@@ -21,7 +21,6 @@ import { LukaEffects } from './store/luka.effects';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  // Other routes...
 ];
 
 @NgModule({

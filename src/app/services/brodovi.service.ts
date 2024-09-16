@@ -8,21 +8,21 @@ import { Brod } from '../models/brod';
 })
 export class BrodService {
 
-  private apiUrl = 'http://localhost:3000/ships'; // Adjust URL to your API endpoint
+  private apiUrl = 'http://localhost:3000/ships'; 
 
   constructor(private http: HttpClient) {}
 
 
-   // Method to update an existing ship
+ 
    updateBrod(brod: Brod): Observable<Brod> {
     return this.http.put<Brod>(`${this.apiUrl}/${brod.id}`, brod);
   }
 
 
-  // This method sends a POST request to add a user to the crew of a specific ship
   addUserToCrew(shipId: number, username: string): Observable<Brod> {
     return this.http.post<Brod>(`${this.apiUrl}/${shipId}/addUser`, { username });
   }
+
 
   fetchBrods(): Observable<Brod[]> {
     return this.http.get<Brod[]>(this.apiUrl);
@@ -33,14 +33,11 @@ export class BrodService {
   }
 
 
-  
-  // getShips(): Observable<any[]> {
-  //   return this.http.get<any[]>(this.apiUrl);
-  // }
+    getShipsByPortId(portId: number): Observable<Brod[]> {
+      return this.http.get<Brod[]>(`${this.apiUrl}?portId=${portId}`);
+    }
 
-  // addShip(ship: any): Observable<any> {
-  //   return this.http.post<any>(this.apiUrl, ship);
-  // }
+
 
   removeBrod(brodId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${brodId}`);

@@ -17,10 +17,7 @@ export const removeBrodFailure = createAction('[Brod] Remove Brod Failure', prop
 
 
 
-// export const addBrod = createAction(
-//     '[Brod] Add Brod',
-//     props<{ brod: Brod }>()
-//   );
+
   
   export const deleteBrod = createAction(
     '[Brod] Delete Brod',
@@ -28,13 +25,13 @@ export const removeBrodFailure = createAction('[Brod] Remove Brod Failure', prop
   );
 
 /////////////// UPDATE
-  // Define an action to update a ship (brod)
+ 
 export const updateBrod = createAction(
   '[Brod] Update Brod',
-  props<{ brod: Brod }>()  // Payload contains the updated brod object
+  props<{ brod: Brod }>()  
 );
 
-// Optionally: Define success/failure actions for better effect handling
+
 export const updateBrodSuccess = createAction(
   '[Brod] Update Brod Success',
   props<{ brod: Brod }>()
@@ -45,3 +42,10 @@ export const updateBrodFailure = createAction(
   props<{ error: any }>()
 );
   
+
+
+// Ucitaj brodove na osnovu id luke
+export const loadBrodsByPortId = createAction(
+  '[Brod List] Load Brods by Port',
+  props<{ portId: number }>()
+);
